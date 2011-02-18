@@ -57,6 +57,7 @@ module S3SwfUpload
       end
 
       out << "\n<script type=\"text/javascript\">\n"
+      
       functionCall << "var s3_swf_#{@count}_object = s3_swf_init('s3_swf_#{@count}', {\n"
       functionCall << "buttonWidth: #{buttonWidth},\n" if buttonWidth
       functionCall << "buttonHeight: #{buttonHeight},\n" if buttonHeight
@@ -155,11 +156,7 @@ module S3SwfUpload
       functionCall << "foo: 'bar'"              
       functionCall << "});\n"
       
-      out << "if (typeof jQuery != 'undefined') { 
-        $(document).ready(function(){"  + functionCall + " }); 
-      } else {
-        "  + functionCall + "
-      }"
+      out << "if (typeof jQuery != 'undefined') { $(document).ready(function(){"  + functionCall + " }); } else {"  + functionCall + "}";
       
       out << "</script>\n"
       out << "<div id=\"s3_swf_#{@count}\">\n"
