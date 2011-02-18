@@ -49,6 +49,7 @@ module S3SwfUpload
       @count ||= 1
       
       out = ''
+      functionCall = ''
 
       if !@include_s3_upload
         out << javascript_include_tag('s3_upload')
@@ -56,103 +57,110 @@ module S3SwfUpload
       end
 
       out << "\n<script type=\"text/javascript\">\n"
-      out << "var s3_swf_#{@count}_object = s3_swf_init('s3_swf_#{@count}', {\n"
-      out << "buttonWidth: #{buttonWidth},\n" if buttonWidth
-      out << "buttonHeight: #{buttonHeight},\n" if buttonHeight
-      out << "flashVersion: '#{flashVersion}',\n" if flashVersion
-      out << "queueSizeLimit: #{queueSizeLimit},\n" if queueSizeLimit
-      out << "fileSizeLimit: #{fileSizeLimit},\n" if fileSizeLimit
-      out << "fileTypes: '#{fileTypes}',\n" if fileTypes
-      out << "fileTypeDescs: '#{fileTypeDescs}',\n" if fileTypeDescs
-      out << "selectMultipleFiles: #{selectMultipleFiles.to_s},\n"
-      out << "keyPrefix: '#{keyPrefix}',\n" if keyPrefix
-      out << "signaturePath: '#{signaturePath}',\n" if signaturePath
-      out << "buttonUpPath: '#{buttonUpPath}',\n" if buttonUpPath
-      out << "buttonOverPath: '#{buttonOverPath}',\n" if buttonOverPath
-      out << "buttonDownPath: '#{buttonDownPath}',\n" if buttonDownPath
+      functionCall << "var s3_swf_#{@count}_object = s3_swf_init('s3_swf_#{@count}', {\n"
+      functionCall << "buttonWidth: #{buttonWidth},\n" if buttonWidth
+      functionCall << "buttonHeight: #{buttonHeight},\n" if buttonHeight
+      functionCall << "flashVersion: '#{flashVersion}',\n" if flashVersion
+      functionCall << "queueSizeLimit: #{queueSizeLimit},\n" if queueSizeLimit
+      functionCall << "fileSizeLimit: #{fileSizeLimit},\n" if fileSizeLimit
+      functionCall << "fileTypes: '#{fileTypes}',\n" if fileTypes
+      functionCall << "fileTypeDescs: '#{fileTypeDescs}',\n" if fileTypeDescs
+      functionCall << "selectMultipleFiles: #{selectMultipleFiles.to_s},\n"
+      functionCall << "keyPrefix: '#{keyPrefix}',\n" if keyPrefix
+      functionCall << "signaturePath: '#{signaturePath}',\n" if signaturePath
+      functionCall << "buttonUpPath: '#{buttonUpPath}',\n" if buttonUpPath
+      functionCall << "buttonOverPath: '#{buttonOverPath}',\n" if buttonOverPath
+      functionCall << "buttonDownPath: '#{buttonDownPath}',\n" if buttonDownPath
       
-      out << %(onFileAdd: function(file){
+      functionCall << %(onFileAdd: function(file){
                 #{onFileAdd}
               },) if onFileAdd
-      out << %(onFileRemove: function(file){
+      functionCall << %(onFileRemove: function(file){
                 #{onFileRemove}
               },) if onFileRemove
-      out << %(onFileSizeLimitReached: function(file){
+      functionCall << %(onFileSizeLimitReached: function(file){
                 #{onFileSizeLimitReached}
               },) if onFileSizeLimitReached
-      out << %(onFileNotInQueue: function(file){
+      functionCall << %(onFileNotInQueue: function(file){
                 #{onFileNotInQueue}
               },) if onFileNotInQueue
               
-      out << %(onQueueChange: function(queue){
+      functionCall << %(onQueueChange: function(queue){
                 #{onQueueChange}
               },) if onQueueChange
-      out << %(onQueueSizeLimitReached: function(queue){
+      functionCall << %(onQueueSizeLimitReached: function(queue){
                 #{onQueueSizeLimitReached}
               },) if onQueueSizeLimitReached
-      out << %(onQueueEmpty: function(queue){
+      functionCall << %(onQueueEmpty: function(queue){
                 #{onQueueEmpty}
               },) if onQueueEmpty
-      out << %(onQueueClear: function(queue){
+      functionCall << %(onQueueClear: function(queue){
                 #{onQueueClear}
               },) if onQueueClear
               
-      out << %(onUploadingStart: function(){
+      functionCall << %(onUploadingStart: function(){
                 #{onUploadingStart}
               },) if onUploadingStart
-      out << %(onUploadingStop: function(){
+      functionCall << %(onUploadingStop: function(){
                 #{onUploadingStop}
               },) if onUploadingStop
-      out << %(onUploadingFinish: function(){
+      functionCall << %(onUploadingFinish: function(){
                 #{onUploadingFinish}
               },) if onUploadingFinish
               
-      out << %(onSignatureOpen: function(file,event){
+      functionCall << %(onSignatureOpen: function(file,event){
                 #{onSignatureOpen}
               },) if onSignatureOpen
-      out << %(onSignatureProgress: function(file,progress_event){
+      functionCall << %(onSignatureProgress: function(file,progress_event){
                 #{onSignatureProgress}
               },) if onSignatureProgress
-      out << %(onSignatureSecurityError: function(file,security_error_event){
+      functionCall << %(onSignatureSecurityError: function(file,security_error_event){
                 #{onSignatureSecurityError}
               },) if onSignatureSecurityError
-      out << %(onSignatureComplete: function(file,event){
+      functionCall << %(onSignatureComplete: function(file,event){
                 #{onSignatureComplete}
               },) if onSignatureComplete
-      out << %(onSignatureIOError: function(file,io_error_event){
+      functionCall << %(onSignatureIOError: function(file,io_error_event){
                 #{onSignatureIOError}
               },) if onSignatureIOError
-      out << %(onSignatureHttpStatus: function(file,http_status_event){
+      functionCall << %(onSignatureHttpStatus: function(file,http_status_event){
                 #{onSignatureHttpStatus}
               },) if onSignatureHttpStatus
-      out << %(onSignatureXMLError: function(file,error_message){
+      functionCall << %(onSignatureXMLError: function(file,error_message){
                 #{onSignatureXMLError}
               },) if onSignatureXMLError
               
-      out << %(onUploadError: function(upload_options,error){
+      functionCall << %(onUploadError: function(upload_options,error){
                 #{onUploadError}
               },) if onUploadError
-      out << %(onUploadOpen: function(upload_options,event){
+      functionCall << %(onUploadOpen: function(upload_options,event){
                 #{onUploadOpen}
               },) if onUploadOpen
-      out << %(onUploadProgress: function(upload_options,progress_event){
+      functionCall << %(onUploadProgress: function(upload_options,progress_event){
                 #{onUploadProgress}
               },) if onUploadProgress
-      out << %(onUploadIOError: function(upload_options,io_error_event){
+      functionCall << %(onUploadIOError: function(upload_options,io_error_event){
                 #{onUploadIOError}
               },) if onUploadIOError
-      out << %(onUploadHttpStatus: function(upload_options,http_status_event){
+      functionCall << %(onUploadHttpStatus: function(upload_options,http_status_event){
                 #{onUploadHttpStatus}
               },) if onUploadHttpStatus
-      out << %(onUploadSecurityError: function(upload_options,security_error_event){
+      functionCall << %(onUploadSecurityError: function(upload_options,security_error_event){
                 #{onUploadSecurityError}
               },) if onUploadSecurityError
-      out << %(onUploadComplete: function(upload_options,event){
+      functionCall << %(onUploadComplete: function(upload_options,event){
                 #{onUploadComplete}
               },) if onUploadComplete
       # This closes out the object (no comma)
-      out << "foo: 'bar'"              
-      out << "});\n"
+      functionCall << "foo: 'bar'"              
+      functionCall << "});\n"
+      
+      out << "if (typeof jQuery != 'undefined') { 
+        $(document).ready(function(){"  + functionCall + " } 
+      } else {
+        "  + functionCall + "
+      }"
+      
       out << "</script>\n"
       out << "<div id=\"s3_swf_#{@count}\">\n"
       out << "Please <a href=\"http://www.adobe.com/go/getflashplayer\">Update</a> your Flash Player to Flash v#{flashVersion} or higher...\n"
