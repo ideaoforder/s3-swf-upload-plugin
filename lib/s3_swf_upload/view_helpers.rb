@@ -156,7 +156,7 @@ module S3SwfUpload
       functionCall << "foo: 'bar'"              
       functionCall << "});\n"
       
-      out << "if (typeof jQuery != 'undefined') {\n $(document).ready(function(){\n"  + functionCall + "\n});\n } else {\n"  + functionCall + "\n}";
+      out << "if (typeof jQuery != 'undefined') {\n $(document).ready(function(){\n alert('huzzah!');\n"  + functionCall + "\n});\n } else {\n"  + functionCall + "\n}";
       
       out << "\n</script>\n"
       out << "<div id=\"s3_swf_#{@count}\">\n"
