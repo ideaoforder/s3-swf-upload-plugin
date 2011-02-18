@@ -156,7 +156,7 @@ module S3SwfUpload
       functionCall << "});\n"
       
       out << "if (typeof jQuery != 'undefined') { 
-        $(document).ready(function(){"  + functionCall + " } 
+        $(document).ready(function(){"  + functionCall + " }); 
       } else {
         "  + functionCall + "
       }"
