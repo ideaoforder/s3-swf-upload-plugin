@@ -156,9 +156,9 @@ module S3SwfUpload
       functionCall << "foo: 'bar'"              
       functionCall << "});\n"
       
-      out << "if (typeof jQuery != 'undefined') { $(document).ready(function(){"  + functionCall + " }); } else {"  + functionCall + "}";
+      out << "if (typeof jQuery != 'undefined') {\n $(document).ready(function(){\n"  + functionCall + "\n});\n } else {\n"  + functionCall + "\n}";
       
-      out << "</script>\n"
+      out << "\n</script>\n"
       out << "<div id=\"s3_swf_#{@count}\">\n"
       out << "Please <a href=\"http://www.adobe.com/go/getflashplayer\">Update</a> your Flash Player to Flash v#{flashVersion} or higher...\n"
       out << "</div>\n"
